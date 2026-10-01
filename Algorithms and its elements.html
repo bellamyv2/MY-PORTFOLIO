@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sentence Counter</title>
+  </head>
+  <body>
+    <header class="page-header">
+      <div class="page-width">
+        <p class="eyebrow">Algorithm practice</p>
+        <h1>Sentence Counter</h1>
+        <p>Count the characters, words, and vowels in a sentence.</p>
+      </div>
+    </header>
+
+    <main class="page-width">
+      <section class="exercise" aria-labelledby="exercise-title">
+        <div class="exercise-heading">
+          <p class="step-label">Three counters · one character at a time</p>
+          <h2 id="exercise-title">Try a sentence</h2>
+        </div>
+
+        <form id="sentenceForm">
+          <label for="sentenceInput"
+            >Enter a sentence ending with a period</label
+          >
+          <textarea id="sentenceInput" rows="3" required spellcheck="false">
+My cat.</textarea
+          >
+          <p class="hint">
+            Use one space between words. The final period counts as a character.
+          </p>
+          <button type="submit">Count sentence</button>
+          <p class="message" id="message" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="results" aria-label="Sentence results">
+        <div class="result">
+          <span>Characters</span>
+          <output id="characterResult">-</output>
+        </div>
+        <div class="result">
+          <span>Words</span>
+          <output id="wordResult">-</output>
+        </div>
+        <div class="result">
+          <span>Vowels</span>
+          <output id="vowelResult">-</output>
+        </div>
+      </section>
+
+      <p class="algorithm-note">
+        The algorithm starts words at 1, then adds 1 for each space. It checks
+        every character for a, e, i, o, or u.
+      </p>
+    </main>
+
+    <script>
+      const form = document.querySelector("#sentenceForm");
+      const sentenceInput = document.querySelector("#sentenceInput");
+      const message = document.querySelector("#message");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const sentence = sentenceInput.value;
+        message.textContent = "";
+
+        if (sentence.length < 2 || !sentence.endsWith(".")) {
+          message.textContent =
+            "Please enter a sentence that ends with a period.";
+          return;
+        }
+
+        if (
+          sentence.startsWith(" ") ||
+          sentence.includes("  ") ||
+          sentence[sentence.length - 2] === " "
+        ) {
+          message.textContent =
+            "Use one space between words, with no space before the period.";
+          return;
+        }
+
+        let characterCount = 0;
+        let wordCount = 1;
+        let vowelCount = 0;
+
+        for (const character of sentence) {
+          characterCount += 1;
+
+          if ("aeiou".includes(character.toLowerCase())) {
+            vowelCount += 1;
+          }
+
+          if (character === " ") {
+            wordCount += 1;
+          }
+        }
+
+        document.querySelector("#characterResult").textContent = characterCount;
+        document.querySelector("#wordResult").textContent = wordCount;
+        document.querySelector("#vowelResult").textContent = vowelCount;
+      });
+    </script>
+  </body>
+</html>
